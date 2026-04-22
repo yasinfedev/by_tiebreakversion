@@ -1665,6 +1665,8 @@ $('btnShowAnswer').classList.add('d-none');
 $('btnEnterPoints').classList.add('d-none');
 $('btnNextQuestion').classList.add('d-none');
 
+      $('txtPoints').textContent = getCurrentQuestionPoints();
+
 updateLiveScoreboard();
 formatStagePills();
     }
@@ -1686,7 +1688,7 @@ formatStagePills();
     }
 
     function buildPointsModal(){
-  const maxPts = CATEGORY[state.currentQuestion.categoryKey].points;
+  const maxPts = getCurrentQuestionPoints();
   $('modalMaxPoints').textContent = maxPts;
 
   const targetNames = state.tieBreak ? state.tieCandidates : state.activeTeamNames;
@@ -1714,7 +1716,7 @@ formatStagePills();
   });
 }
     function savePointsFromModal(){
-  let pts = CATEGORY[state.currentQuestion.categoryKey].points;
+  const pts = getCurrentQuestionPoints();
 
   // Tie-break bonus soruları 5 puan olsun
   if(state.tieBreak && state.currentQuestion.categoryKey === 'BONUS'){
@@ -2068,6 +2070,11 @@ function proceedFromScoreboard(){
   }else{
     alert(`Şampiyon: ${sorted[0]?.name || '-'}`);
   }
+}
+
+    function getCurrentQuestionPoints(){
+  if(state.tieBreak) return CATEGORY.BONUS.tiePoints;
+  return CATEGORY[state.currentQuestion.categoryKey].points;
 }
 
 function resetAll(){
