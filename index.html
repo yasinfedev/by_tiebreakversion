@@ -282,7 +282,7 @@
     <div class="container-fluid px-3 px-md-4 d-flex align-items-center justify-content-between">
       <div class="brand-badge">
         <span class="badge text-bg-dark rounded-pill">ATUDER</span>
-        <span>Acil Tıp Asistan Bilgi Yarışması 2026 | YasinMineBY26 - v1.10.51 - BC 1.24 | © yamizey yazılım</span>
+        <span>Acil Tıp Asistan Bilgi Yarışması 2026 | YasinMineBY26 - v1.10.51 - BC 1.29 | © yamizey yazılım</span>
       </div>
       <div class="d-flex align-items-center gap-2">
         <span id="stagePill" class="stage-pill d-none">AŞAMA</span>
@@ -444,9 +444,7 @@ Nabız yok biz varız
 </div>
 
           <div class="footer-note mt-3">
-            © Web uygulamasının tüm hakları saklıdır.
-            <div>CC BY-NC-ND Atıf-GayriTicari-Türetilemez 4.0 Uluslararası (CC BY-NC-ND 4.0) - YasinMineBY26 - Acil Tıp Asistan Bilgi Yarışması 2026 Web Uygulaması (2026) CC BY-NC-ND ile lisanslanmıştır.
-            </div>
+            © Web uygulamasının tüm hakları saklıdır. CC BY-NC-ND Atıf-GayriTicari-Türetilemez 4.0 Uluslararası (CC BY-NC-ND 4.0) ile lisanslanmıştır.
           </div>
         </div>
 
@@ -1687,8 +1685,8 @@ formatStagePills();
       $('btnShowAnswer').classList.add('d-none');
     }
 
-    function buildPointsModal(){
-  const maxPts = getCurrentQuestionPoints();
+   function buildPointsModal(){
+  const maxPts = getCurrentQuestionPoints(); // ✅ BURAYI DEĞİŞTİRDİK
   $('modalMaxPoints').textContent = maxPts;
 
   const targetNames = state.tieBreak ? state.tieCandidates : state.activeTeamNames;
@@ -1696,19 +1694,20 @@ formatStagePills();
   tbody.innerHTML = '';
 
   targetNames.forEach((name, idx)=>{
-    const group = `ans-${state.stageIndex}-${state.tieBreak ? 'T' : 'N'}-${idx}`; // ✅ benzersiz
+    const group = `ans-${state.stageIndex}-${state.tieBreak ? 'T' : 'N'}-${idx}`;
 
     const tr = document.createElement('tr');
-    tr.dataset.team = name; // ✅ RAW isim, escape yok
+    tr.dataset.team = name;
+
     tr.innerHTML = `
       <td class="fw-bold">${escapeHtml(name)}</td>
       <td class="text-end">
-        <div class="btn-group" role="group" aria-label="Doğru Yanlış">
-          <input type="radio" class="btn-check" name="${group}" id="${group}-w" autocomplete="off" data-correct="0" checked>
-          <label class="btn btn-outline-danger fw-bold" for="${group}-w">Yanlış</label>
+        <div class="btn-group">
+          <input type="radio" class="btn-check" name="${group}" id="${group}-w" data-correct="0" checked>
+          <label class="btn btn-outline-danger" for="${group}-w">Yanlış</label>
 
-          <input type="radio" class="btn-check" name="${group}" id="${group}-c" autocomplete="off" data-correct="1">
-          <label class="btn btn-outline-success fw-bold" for="${group}-c">Doğru</label>
+          <input type="radio" class="btn-check" name="${group}" id="${group}-c" data-correct="1">
+          <label class="btn btn-outline-success" for="${group}-c">Doğru</label>
         </div>
       </td>
     `;
@@ -1716,10 +1715,10 @@ formatStagePills();
   });
 }
     function savePointsFromModal(){
-  const pts = getCurrentQuestionPoints();
+  let pts = CATEGORY[state.currentQuestion.categoryKey].points;
 
-  // Tie-break bonus soruları 5 puan olsun
-  if(state.tieBreak && state.currentQuestion.categoryKey === 'BONUS'){
+  // Tie-break modunda tüm sorular 5 puan
+  if(state.tieBreak){
     pts = CATEGORY.BONUS.tiePoints;
   }
 
@@ -1745,7 +1744,6 @@ formatStagePills();
     action.teamScoreSnapshot[t.name] = t.score;
   });
 
-  // ✅ satır satır oku
   const rows = $('pointsEntryBody').querySelectorAll('tr[data-team]');
   rows.forEach(tr=>{
     const name = tr.dataset.team;
@@ -1763,7 +1761,6 @@ formatStagePills();
     }
   });
 
-  // son işlemi hafızaya al
   state.lastScoreAction = action;
 
   updateLiveScoreboard();
