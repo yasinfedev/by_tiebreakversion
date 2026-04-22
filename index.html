@@ -271,7 +271,13 @@
   height: auto;
 }
 
-    
+    mark{
+  background: linear-gradient(90deg, #fff3a3, #ffe066);
+  color: #212529;
+  font-weight: 900;
+  border-radius: 8px;
+  padding: .1rem .45rem;
+}
     
   </style>
 </head>
@@ -282,7 +288,7 @@
     <div class="container-fluid px-3 px-md-4 d-flex align-items-center justify-content-between">
       <div class="brand-badge">
         <span class="badge text-bg-dark rounded-pill">ATUDER</span>
-        <span>Acil Tıp Asistan Bilgi Yarışması 2026 | YasinMineBY26 - v1.10.51 - BC 1.32 | © yamizey yazılım</span>
+        <span>Acil Tıp Asistan Bilgi Yarışması 2026 | YasinMineBY26 - v1.10.51 - BC 1.34 | © yamizey yazılım</span>
       </div>
       <div class="d-flex align-items-center gap-2">
         <span id="stagePill" class="stage-pill d-none">AŞAMA</span>
@@ -1482,7 +1488,13 @@ function stopStandby(){
 
 tr.innerHTML = `
   <td class="fw-bold">${idx+1}</td>
-  <td class="fw-bold">${escapeHtml(t.name)}</td>
+  <td class="fw-bold">
+  ${
+    state.tieBreak && state.tieCandidates.includes(t.name)
+      ? `<mark class="px-2 py-1 rounded">${escapeHtml(t.name)}</mark>`
+      : escapeHtml(t.name)
+  }
+</td>
   <td class="text-end fw-bold fs-5">
     ${t.score}
     ${extra > 0 ? `<span class="badge text-bg-warning ms-2">+${extra}</span>` : ``}
