@@ -282,7 +282,7 @@
     <div class="container-fluid px-3 px-md-4 d-flex align-items-center justify-content-between">
       <div class="brand-badge">
         <span class="badge text-bg-dark rounded-pill">ATUDER</span>
-        <span>Acil Tıp Asistan Bilgi Yarışması 2026 | YasinMineBY26 - v1.10.51 - BC 1.29 | © yamizey yazılım</span>
+        <span>Acil Tıp Asistan Bilgi Yarışması 2026 | YasinMineBY26 - v1.10.51 - BC 1.32 | © yamizey yazılım</span>
       </div>
       <div class="d-flex align-items-center gap-2">
         <span id="stagePill" class="stage-pill d-none">AŞAMA</span>
@@ -465,7 +465,7 @@ Nabız yok biz varız
               <tbody id="liveScoreBody"></tbody>
             </table>
           </div>
-          <div class="footer-note">Bu tablo, her “PUAN GİR” işleminden sonra güncellenir.</div>
+          <div class="footer-note">Bu tablo, her sorudan sonra güncellenir.</div>
           <hr>
           <div class="score-logo-wrap">
   <center><img src="https://acil42.com/wp-content/uploads/2026/04/Dosya.png" alt="ATUDER Logo" class="score-logo"></center>
@@ -1622,12 +1622,7 @@ if(state.tieBreak){
 setArenaTheme(cat.key);
 
 // ✅ PUAN
-let displayPoints = cat.points;
-
-if(state.tieBreak){
-  displayPoints = CATEGORY.BONUS.tiePoints;
-}
-
+let displayPoints = getCurrentQuestionPoints();
 $('txtPoints').textContent = displayPoints;
       $('txtQCounter').textContent = questionIndexText;
 
@@ -1715,12 +1710,7 @@ formatStagePills();
   });
 }
     function savePointsFromModal(){
-  let pts = CATEGORY[state.currentQuestion.categoryKey].points;
-
-  // Tie-break modunda tüm sorular 5 puan
-  if(state.tieBreak){
-    pts = CATEGORY.BONUS.tiePoints;
-  }
+  let pts = getCurrentQuestionPoints();
 
   if(state.tieBreak){
     state.tieBreakQuestionsAsked += 1;
@@ -2070,7 +2060,6 @@ function proceedFromScoreboard(){
 }
 
     function getCurrentQuestionPoints(){
-  if(state.tieBreak) return CATEGORY.BONUS.tiePoints;
   return CATEGORY[state.currentQuestion.categoryKey].points;
 }
 
